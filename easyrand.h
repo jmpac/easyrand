@@ -13,7 +13,7 @@
 		rand(0.f, 1.f);	// a random float in the interval [0., 1.].
 
 		// To use a distribution other than uniform, pass it to rand(). (...which will invoke its operator() with the internal engine.)
-		auto normaldist = normal_distribution<>(5.0, 0.5);s
+		auto normaldist = normal_distribution<>(5.0, 0.5);
 		rand(normaldist);		// a random number according to the distribution passed in.
 
 		// If you're making the same call repeatedly, it can be convenient to use a function object with the
