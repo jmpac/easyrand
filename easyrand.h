@@ -2,8 +2,8 @@
 	easyrand provides an easy-to-use interface on top of <random>. Highlights:
 
 	1) You don't need to worry about engines. A thread_local engine is managed for you. 
-	2) You don't need to worry about seeds. The library uses a random seed automatically. (You can control the seed if you need to.)
-	3) Uniform distribution is the default. Other distributions can be used.
+	2) You don't need to worry about seeds. The library uses a random seed automatically. (Manual control if needed.)
+	3) Uniform distribution is a single function call. (Other distributions can be used.)
 
 	Usage:
 
@@ -12,7 +12,7 @@
 		rand(0., 1.);		// a random double in the interval [0., 1.].
 		rand(0.f, 1.f);	// a random float in the interval [0., 1.].
 
-		// To use a distribution other than uniform, pass it to rand(). (...which will invoke its operator() with the internal engine.)
+		// To use a distribution other than uniform, pass it to rand(), which will get a random number out of it.
 		auto normaldist = normal_distribution<>(5.0, 0.5);
 		rand(normaldist);		// a random number according to the distribution passed in.
 
@@ -49,7 +49,7 @@ namespace easyrand {
 
 		// uniform_int_distribution only works with these types (excludes char and bool, unlike std::is_integral).
 		template <class T>
-		struct is_integer : std::bool_constant<
+		struct ok_for_uniform_int_distribution : std::bool_constant<
 			std::is_same<T, short>::value ||
 			std::is_same<T, int>::value ||
 			std::is_same<T, long>::value ||
@@ -62,8 +62,8 @@ namespace easyrand {
 
 	} // namespace detail
 
-	// These functions provide control over the seed, which can be useful for debugging and testing (to create a repeatable/predictable sequence of random numbers).
-	// Normally, you don't need to worry about this. The engine is randomly seeded by default.
+	// These functions provide control over the seed. You don't normally need to worry about this; the library is randomly-
+	// seeded automatically. Manual control can be useful for testing (to generate a repeatable sequence of numbers).
 	inline void reseed() {
 		detail::get_engine().seed(detail::get_random_seed());
 	}
@@ -73,7 +73,7 @@ namespace easyrand {
 
 	// Returns a random number in the range [a, b], selected using uniform distribution.
 	template <class T>
-	auto rand(T a, T b) -> std::enable_if_t<detail::is_integer<T>::value, T> {
+	auto rand(T a, T b) -> std::enable_if_t<detail::ok_for_uniform_int_distribution<T>::value, T> {
 		uniform_int_distribution<T> dist(a, b);
 		return dist(detail::get_engine());
 	}
@@ -111,6 +111,4 @@ namespace easyrand {
 
 } // namespace easyrand
 
-
 #endif
-
