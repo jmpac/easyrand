@@ -103,7 +103,7 @@ namespace easyrand {
 		return [a,b]{ return rand(a, b); };
 	}
 
-	// Returns a random-number-generating function object using the distribution specified by "Dist", which is constructed using "args".
+	// Returns a random-number-generating function object using the distribution specified by "Dist", constructed with "args".
 	template <class Dist, class... Args>
 	auto make_rng(Args&&... args) {
 		return [dist = Dist(std::forward<Args>(args)...)]() mutable { return rand(dist); };
