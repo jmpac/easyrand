@@ -1,5 +1,5 @@
 /*
-	easyrand provides a straighforward interface on top of <random>. Highlights:
+	easyrand provides an easy-to-use interface on top of <random>. Highlights:
 
 	1) You don't need to worry about engines. A thread_local engine is managed for you. 
 	2) You don't need to worry about seeds. The library uses a random seed automatically. (You can control the seed if you need to.)
