@@ -25,6 +25,8 @@
 		bern();			// a random number according to bernoulli_distribution.
 
 	Licence: Whatever.
+
+	https://github.com/jmpac/easyrand
 */
 
 #ifndef EASYRAND_H_INCLUDED
